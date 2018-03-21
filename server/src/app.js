@@ -3,19 +3,12 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
+var Post = require("../models/post")
 
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.get('/posts', (req, res) => {
-  res.send(
-    [{
-      title: "Hello World!",
-      description: "Hi there! How are you?"
-    }]
-  )
-})
 
 // //creates connection with database called posts
 var mongoose = require('mongoose');
@@ -25,8 +18,6 @@ db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function(callback){
   console.log("Connection Succeeded");
 });
-
-var Post = require("../models/post")
 
 
 //opens API endpoint called posts which receives http POST method
@@ -60,6 +51,50 @@ app.get('/posts', (req, res) => {
     })
   }).sort({_id:-1})
 })
+
+
+// Fetch single post
+app.get('/post/:id', (req, res) => {
+  var db = req.db;
+  Post.findById(req.params.id, 'title description', function (error, post) {
+    if (error) { console.error(error); }
+    res.send(post)
+  })
+})
+
+// Update a post
+app.put('/posts/:id', (req, res) => {
+  var db = req.db;
+  Post.findById(req.params.id, 'title description', function (error, post) {
+    if (error) { console.error(error); }
+
+    post.title = req.body.title
+    post.description = req.body.description
+    post.save(function (error) {
+      if (error) {
+        console.log(error)
+      }
+      res.send({
+        success: true
+      })
+    })
+  })
+})
+
+// Delete a post
+app.delete('/posts/:id', (req, res) => {
+  var db = req.db;
+  Post.remove({
+    _id: req.params.id
+  }, function(err, post){
+    if (err)
+      res.send(err)
+    res.send({
+      success: true
+    })
+  })
+})
+
 
 //port server is running
 app.listen(process.env.PORT || 8081)

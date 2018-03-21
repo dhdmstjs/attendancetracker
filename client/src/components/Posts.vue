@@ -1,11 +1,11 @@
 <template>
   <div class="posts">
-    <h1>Posts</h1>
+    <h1>Attendance</h1>
     <div v-if="posts.length > 0" class="table-wrap">
       <div>
         <router-link v-bind:to="{ name: 'NewPost' }" class="">Add Post</router-link>
       </div>
-      <table>
+      <table align="center">
         <tr>
           <td>Title</td>
           <td width="550">Description</td>
@@ -16,7 +16,7 @@
           <td>{{ post.description }}</td>
           <td align="center">
             <router-link v-bind:to="{ name: 'EditPost', params: { id: post._id } }">Edit</router-link> |
-            <a href="#">Delete</a>
+            <a href="#" @click="deletePost(post._id)">Delete</a>
           </td>
         </tr>
       </table>
@@ -27,6 +27,8 @@
     </div>
   </div>
 </template>
+
+<script src="../static/swiper.min.js"></script>
 
 <script>
 import PostsService from '@/services/PostsService'
@@ -44,14 +46,21 @@ export default {
     async getPosts () {
       const response = await PostsService.fetchPosts()
       this.posts = response.data.posts
+    },
+    async deletePost (id) {
+      await PostsService.deletePost(id)
+      this.getPosts()
+      this.$router.push({ name: 'Posts' })
     }
+
   }
 }
 </script>
+
 <style type="text/css">
 .table-wrap {
-  width: 60%;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0px auto;
   text-align: center;
 }
 table th, table tr {
@@ -81,5 +90,34 @@ a.add_post_link {
   text-transform: uppercase;
   font-size: 12px;
   font-weight: bold;
+}
+.swiper-container {
+      width: 100%;
+      height: 100%;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  width: 80%;
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.swiper-slide:nth-child(2n) {
+  width: 60%;
+}
+.swiper-slide:nth-child(3n) {
+  width: 40%;
 }
 </style>
