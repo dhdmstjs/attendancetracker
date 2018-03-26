@@ -3,10 +3,13 @@
     <h1>Add Post</h1>
       <div class="form">
         <div>
-          <input type="text" name="title" placeholder="TITLE" v-model="title">
+          <input type="text" name="netid" placeholder="NETID" v-model="netid">
         </div>
         <div>
-          <textarea rows="15" cols="15" placeholder="DESCRIPTION" v-model="description"></textarea>
+          <input type="text" name = "name" placeholder="NAME" v-model="name">
+        </div>
+        <div>
+          <textarea name = "date" placeholder="DATE: attendance type" v-model="date"></textarea>
         </div>
         <div>
           <button class="app_post_btn" @click="addPost">Add</button>
@@ -21,20 +24,35 @@ export default {
   name: 'NewPost',
   data () {
     return {
-      title: '',
-      description: ''
+      netid: '',
+      name: '',
+      date: []
     }
   },
   methods: {
+    parseDate(text) {
+      let splitWords = text.split('\n')
+      let date = []
+      console.log("splitWords", splitWords);
+      for (let words in splitWords) {
+        let split = splitWords[words].split(',')
+        let d1 = split[0]
+        let d2 = split[1]
+        date.push({date:d1, attend:d2})
+      }
+      return date
+    },
     async addPost () {
       await PostsService.addPost({
-        title: this.title,
-        description: this.description
+        netid: this.netid,
+        name: this.name,
+        date: this.parseDate(this.date)
       })
       this.$router.push({ name: 'Posts' })
     }
   }
 }
+
 </script>
 <style type="text/css">
 .form input, .form textarea {

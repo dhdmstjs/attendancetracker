@@ -11,6 +11,7 @@ export default {
   },
 
   updatePost (params) {
+    console.log('Api.get', Api().get('post/' + params.id))
     return Api().put('posts/' + params.id, params)
   },
 
@@ -20,5 +21,7 @@ export default {
 
   deletePost (id) {
     return Api().delete('posts/' + id)
-  }
+  },
+
+
 }
