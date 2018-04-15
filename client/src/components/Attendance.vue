@@ -1,5 +1,5 @@
 <template>
-  <div class = "posts">
+  <div class = "attendance">
     <h1>Attendance for {{fullday}}</h1>
     <vue-swing
     @throwout="onThrowout"
@@ -182,7 +182,7 @@ body {
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
-  font-size: 72px;
+  font-size: 68px;
   height: 450px;
   justify-content: center;
   left: 20%;

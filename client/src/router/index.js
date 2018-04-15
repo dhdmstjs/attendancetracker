@@ -5,6 +5,7 @@ import Posts from '@/components/Posts'
 import NewPost from '@/components/NewPost'
 import EditPost from '@/components/EditPost'
 import Attendance from '@/components/Attendance'
+import Import from '@/components/Import'
 
 
 Vue.use(Router)
@@ -36,6 +37,11 @@ export default new Router({
       path: '/posts/attendance',
       name: 'Attendance',
       component: Attendance
+    },
+    {
+      path: '/import',
+      name: 'Import',
+      component: Import
     }
   ]
 })
